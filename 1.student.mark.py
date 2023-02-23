@@ -1,102 +1,90 @@
-# Ask the user to input a number of unit (course / student)
-def input_number(unit):
-    return int(input(f"Enter the number of {unit} in this class: "))
-
-# Ask the user to enter a list of info for an unit_type
-def input_infos(unit_type, infos):
-    item = {}
-
-    # TODO: input info for the unit_type (student/course info)
-    for i in infos:
-        value = input(f"Enter the {i} of {unit_type}: ")
-
-    return item
-
-# Input the student mark in a course base on the course id
-def input_mark():
-
-    student["marks"] = {}
-    # TODO: check mark in student or not (can use dict)
-    # If not, enter the mark for the course
-
-
-# Display a list of students
-def list_students(students):
-
-    # TODO: check what happens if there's no student (hint: len(students))
-    print("There aren't any students yet")
-
-    # TODO: display the student list
-    print("Here is the student list: ")
-    # TODO: add loop function to check the info of student
-    print(f"{i+1}. {student['id']} - {student['name']} - {student['DoB']}")
-
-        # TODO: check if mark student and print out the information
-        if "marks" in student:
-            print("Marks (Course Id - Mark): ", end="")
-            
-            
-
-# Display a list of courses
-def list_courses(courses):
-    # TODO: check what happens if there's no course (hint: (lencourse))
-    print("There aren't any courses yet")
-        
-    print("Here is the course list: ")
-    # TODO: add loop function to check the info of course
-    print(f"{i+1}. {course['id']} - {course['name']}")
-
-# Ask the user to enter an integer to select an option
-def select(option_range, input_message="Choose an option: "):
-    selection = input(input_message)
-    if not selection.isnumeric():
-        return -1
-    selection = int(selection)
-    if selection not in option_range:
-        return -1
-    return selection
-
-# Pause the program
-def pause():
-    input("Press Enter to continue...")
-
-# Main function for the "game"
-def main():
-    # Initialize the list
-
-    while(True):
-        print("""
-Welcome to the student managament system! Please choose an option as below:
-    0. Exit
-    1. Input number of students
-    2. Input students information (ID, name, DoB)
-    3. Input number of courses
-    4. Input course information (ID, name)
-    5. Input marks for student in a course
-    6. List courses
-    7. List students""") 
-        selection = select(range(0, 8))                                                                 # Choose option from 0 -> 7
-        if selection == 0:
-            break
-
-        elif selection == 1:                                                                            # Option 1
-            num_students = input_number("students")
-        elif selection == 2:                                                                            # Option 2                                                     
-            students.append(input_infos("student", student_infos))
-        elif selection == 3:                                                                            # Option 3
-
-        elif selection == 4:                                                                            # Option 4
-
-        elif selection == 5:                                                                            # Option 5
-
-        elif selection == 6:                                                                            # Option 6
-
-        elif selection == 7:                                                                            # Option 7
-
+students = []
+courses = []
+marks = {}
+#input functions
+def input_students():              
+    n_students = int(input("Enter the number of students you want input: "))         #input number of students
+    for i in range(n_students):
+        student_name = input("Enter the student name: ")
+        student_id = input("Enter the student ID: ")
+        student_dob = input("Enter the student's DoB: ")
+        if student_id in students:                                                   #append if this student isn't on the list
+            print("This student is on the list!")
         else:
-            print("Invalid input. Please try again!")
-        pause() 
+            students.append((student_id, student_name, student_dob))
 
-# Call the main function
-if __name__ == "__main__":
-    main()
+def input_courses():                                                                 #append if this course is not on the list
+    course_name = input("Enter the course name: ")
+    course_id = input("Enter the course id: ")
+    if course_id not in courses:
+        courses.append((course_name, course_id))
+    else:
+        print("This course is on the list!")
+
+def input_marks():
+    course_id = input("Enter the course ID you what to input marks: ")
+    if course_id not in courses:
+        for student in students:
+            student_id = student[0]
+            mark = float(input(f"Enter the mark for this student {student_id}: "))
+            if course_id not in marks:
+                marks[course_id] = {}
+            mark = marks[course_id][student_id]
+    else:
+        print("We don't learn this course !")
+
+#list functions
+def list_students():
+    print("student: ")
+    for student in students:
+        print(f"ID {student[0]} - Name: {student[1]} - DoB: {student[2]}")
+
+
+def list_course():
+    print("Course: ")
+    for course in courses:
+        print(f"Course name: {course[0]} - Course ID: {course[1]}")
+
+
+def list_marks():
+    course_id = input("Enter the course ID: ")
+    if course_id not in marks:
+        print("We don't learn this course !")
+    else:
+        print(f"Marks for course {course_id} is: ")
+        for student in students:
+            student_id = student[0]
+            if student_id in marks[course_id]:
+                mark = marks[course_id][student_id]
+                print(f"ID: {student[0]} - Mark: {marks}")
+            else:
+                print("This student is not in this course !")
+
+
+while(True):
+    print("\n0. Exit")
+    print("1. Input students")
+    print("2. Input courses")
+    print("3. Input marks")
+    print("4. List student infor")
+    print("5. List course infor")
+    print("6. Show marks for a given course")
+    choose = int(input("Enter your choice: "))
+    if choose == 0:
+        break
+    elif choose == 1:
+        input_students()
+    elif choose == 2:
+        input_courses()
+    elif choose == 3:
+        input_marks()
+    elif choose == 4:
+        list_students()
+    elif choose == 5:
+        list_course()
+    elif choose == 6:
+        list_marks()
+    else:
+        print("Invalid, please choose one obtion above:")
+
+
